@@ -40,20 +40,20 @@ export default function Skills() {
   };
 
   const skillList = [
-    'React Ecosystem', 'TypeScript / JavaScript', 'Material UI (MUI)', 'Tailwind CSS',
-    'LINE Chatbot Engine', 'Dialogflow NLU', 'MSSQL Server', 'Matrix SDK Architecture',
-    'Storybook UI Testing', 'Git / Version Control'
+    'React', 'TypeScript / JavaScript', 'Material UI (MUI)', 'Tailwind CSS',
+    'HTML5', 'CSS3', 'SQL (Microsoft SQL Server)', 'LINE LIFF / LINE Messaging API',
+    'Git'
   ];
 
   return (
     <DashboardCard>
-      <SectionHeader title="TECHNICAL CORE" />
+      <SectionHeader title="Skills" />
       <Grid container spacing={4}>
         
         {/* ✅ บล็อกที่ 1: แก้ไขจาก item xs={12} md={7} มาเป็น size ตัวใหม่ */}
         <Grid size={{ xs: 12, md: 7 }}>
           <Stack direction="row" useFlexGap sx={{ flexWrap: 'wrap', gap: '10px' }}>
-            {skillList.map((skill) => (
+            {skillList.map((skill, index) => (
               <Chip
                 key={skill}
                 label={skill}
@@ -64,11 +64,18 @@ export default function Skills() {
                   borderRadius: '12px',
                   p: '18px 8px',
                   fontSize: '0.85rem',
-                  transition: 'all 0.3s',
+                  opacity: 0,
+                  animation: 'chipIn 0.45s ease forwards',
+                  animationDelay: `${index * 0.06}s`,
+                  transition: 'transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease',
+                  '@keyframes chipIn': {
+                    from: { opacity: 0, transform: 'translateY(10px) scale(0.9)' },
+                    to: { opacity: 1, transform: 'translateY(0) scale(1)' },
+                  },
                   '&:hover': {
                     borderColor: COLORS.accentCyan,
                     bgcolor: 'rgba(6, 182, 212, 0.05)',
-                    transform: 'translateY(-2px)'
+                    transform: 'translateY(-3px) scale(1.05)'
                   }
                 }}
               />
@@ -77,11 +84,11 @@ export default function Skills() {
         </Grid>
 
         {/* ✅ บล็อกที่ 2: แก้ไขจาก xs={12} md={5} มาเป็น size ตัวใหม่ด้วยเช่นกัน */}
-        <Grid size={{ xs: 12, md: 5 }}>
+        {/* <Grid size={{ xs: 12, md: 5 }}>
           <Box sx={{ background: 'rgba(0,0,0,0.15)', borderRadius: '16px', p: '15px', height: '220px' }}>
             <Radar data={chartData} options={chartOptions} />
           </Box>
-        </Grid>
+        </Grid> */}
 
       </Grid>
     </DashboardCard>

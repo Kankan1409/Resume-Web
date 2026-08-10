@@ -5,9 +5,9 @@ import { DashboardCard, SectionHeader, COLORS } from '../components/SharedLayout
 export default function Overview() {
   return (
     <DashboardCard>
-      <SectionHeader title="SYSTEM OVERVIEW" />
+      <SectionHeader title="Profile" />
       <Typography sx={{ fontSize: '1.05rem', fontWeight: 300, lineHeight: 1.8, color: COLORS.textLight }}>
-        Software Developer specializing in complete architecture bridging frontend interfaces and deep automation workflows. Proficient in executing highly scalable web frameworks using React and Material UI, while constructing interactive multi-channel conversational layers. Experienced in handling asynchronous communication structures and database operations to maintain complete continuous uptime and transactional reliability.
+        Junior Software Developer with experience in frontend development using React, TypeScript, and JavaScript, along with SQL and database management. Passionate about building user-friendly web applications, solving technical problems, and continuously learning new technologies.
       </Typography>
     </DashboardCard>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
 export const COLORS = {
@@ -46,6 +46,83 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ children }) => (
     <CardContent sx={{ p: '35px !important' }}>{children}</CardContent>
   </Card>
 );
+
+/**
+ * Reveal: fades + slides its children up into place the first time
+ * they scroll into view. Wrap any section/card with it for a
+ * scroll-triggered entrance animation.
+ */
+export const Reveal: React.FC<{ children: React.ReactNode; delay?: number }> = ({ children, delay = 0 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(28px)',
+        transition: `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+/**
+ * TypewriterText: types out `text` one character at a time with a
+ * blinking cursor. Nice small "ลูกเล่น" touch for hero/subtitle text.
+ */
+export const TypewriterText: React.FC<{ text: string; speed?: number; sx?: object }> = ({ text, speed = 55, sx }) => {
+  const [displayed, setDisplayed] = useState('');
+
+  useEffect(() => {
+    setDisplayed('');
+    let i = 0;
+    const id = setInterval(() => {
+      i += 1;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, speed);
+    return () => clearInterval(id);
+  }, [text, speed]);
+
+  return (
+    <Typography component="span" sx={sx}>
+      {displayed}
+      <Box
+        component="span"
+        sx={{
+          display: 'inline-block',
+          width: '2px',
+          height: '0.9em',
+          bgcolor: 'currentColor',
+          ml: '3px',
+          verticalAlign: 'text-bottom',
+          animation: 'blinkCursor 0.9s step-end infinite',
+          '@keyframes blinkCursor': { '50%': { opacity: 0 } },
+        }}
+      />
+    </Typography>
+  );
+};
 
 export const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
   <Typography

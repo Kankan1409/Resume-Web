@@ -1,34 +1,81 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DashboardCard, SectionHeader, COLORS } from '../components/SharedLayout';
 
 export default function Projects() {
   const projects = [
-    { tag: 'Ecosystem Integration', title: 'LINE & Dialogflow Repair System', desc: 'An automated diagnostics system triggering task dispatches via custom LINE webhooks, synced natively with an MSSQL relational backend.', fullWidth: false },
-    { tag: 'Secure Communications', title: 'Custom Matrix Chat Widget', desc: 'A decentralized UI module implementing secure matrix streaming, featuring interactive asynchronous message wrappers and float visibility states.', fullWidth: false },
-    { tag: 'UI Architecture', title: 'MUI to Tailwind Component Compiler', desc: 'Isolated user interface engineering using Storybook layout tests, transforming highly coupled Material UI layouts into lightweight Tailwind component tokens.', fullWidth: true }
+    {
+      title: 'LINE Chatbot – Hospital Maintenance System',
+      desc: ['Developed frontend for a hospital maintenance reporting LINE Chatbot.',
+        'Integrated backend APIs to display repair status and information'
+      ],
+      fullWidth: false
+    },
+    {
+      title: 'CMMS System',
+      desc: ['Responsible for frontend development of selected modules.',
+        'Translated UI designs into functional interfaces',
+        'Integrated APIs and resolved assigned bugs'
+      ],
+      fullWidth: false
+    },
+    {
+      title: 'RCM System',
+      desc: ['Developed and maintained frontend components in collaboration with the team'],
+      fullWidth: true
+    }
   ];
 
   return (
     <DashboardCard>
       <SectionHeader title="EXPERIMENTAL & REAL PROJECTS" />
-      <Grid container spacing={3}>
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
+        gridAutoRows: 'auto',
+        alignItems: 'stretch',
+        gap: '24px',
+      }}>
         {projects.map((proj, index) => (
-          <Grid size={{ xs: 12, sm: 6 }} key={index}>
-            <Box sx={{
-              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px', p: '25px', height: '100%',
-              display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.3s',
-              '&:hover': { borderColor: COLORS.accentBlue, background: 'rgba(37, 99, 235, 0.03)', transform: 'scale(1.02)' }
-            }}>
-              <Box>
-                <Typography sx={{ fontSize: '0.75rem', color: COLORS.accentCyan, textTransform: 'uppercase', fontWeight: 600, mb: '10px', letterSpacing: '0.5px' }}>{proj.tag}</Typography>
-                <Typography variant="h6" sx={{ fontSize: '1.2rem', mb: '10px', fontWeight: 600, color: COLORS.textLight }}>{proj.title}</Typography>
-              </Box>
-              <Typography sx={{ fontSize: '0.85rem', color: COLORS.slateGray, lineHeight: 1.5 }}>{proj.desc}</Typography>
+          <Box key={index} sx={{
+            gridColumn: proj.fullWidth ? { xs: '1 / -1', sm: '1 / -1' } : 'auto',
+            background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px', p: '25px',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            position: 'relative', overflow: 'hidden',
+            transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s, background-color 0.35s, box-shadow 0.35s',
+            opacity: 0,
+            animation: 'projectIn 0.5s ease forwards',
+            animationDelay: `${index * 0.12}s`,
+            '@keyframes projectIn': {
+              from: { opacity: 0, transform: 'translateY(18px)' },
+              to: { opacity: 1, transform: 'translateY(0)' },
+            },
+            '&::before': {
+              content: '""', position: 'absolute', top: 0, left: '-150%', width: '60%', height: '100%',
+              background: 'linear-gradient(120deg, transparent, rgba(6,182,212,0.12), transparent)',
+              transition: 'left 0.7s ease',
+              pointerEvents: 'none',
+            },
+            '&:hover': {
+              borderColor: COLORS.accentBlue, background: 'rgba(37, 99, 235, 0.03)',
+              transform: 'translateY(-6px)',
+              boxShadow: '0 15px 35px rgba(6, 182, 212, 0.12)',
+            },
+            '&:hover::before': { left: '150%' }
+          }}>
+            <Box>
+              <Typography variant="h6" sx={{ fontSize: '1.2rem', mb: '10px', fontWeight: 600, color: COLORS.textLight }}>{proj.title}</Typography>
             </Box>
-          </Grid>
+            <Box>
+              {proj.desc.map((line, i) => (
+                <Typography key={i} sx={{ fontSize: '0.85rem', color: COLORS.slateGray, lineHeight: 1.5, mb: i < proj.desc.length - 1 ? '4px' : 0 }}>
+                  {line}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </DashboardCard>
   );
 }
